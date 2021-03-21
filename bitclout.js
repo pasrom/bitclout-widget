@@ -35,7 +35,7 @@ const widgetSize = widgetSizes[config.widgetFamily] ?? widgetSizes.small
 let mediumWidget = (config.widgetFamily === 'medium') ? true : false
 
 widget = await createWidget(widgetSize)
-log(widget)
+
 if (!config.runsInWidget) {
   if (mediumWidget) {
       await widget.presentMedium()
