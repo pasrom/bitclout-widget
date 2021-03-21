@@ -10,6 +10,7 @@ const res = await req.loadJSON();
 usdBtcTracker = "https://blockchain.info/ticker"
 getExchangeRate = "https://api.bitclout.com/get-exchange-rate"
 imgBitCloutUrl = "https://i.imgur.com/WqhXjJS.png"
+betterRequestUrl = "https://gist.githubusercontent.com/schl3ck/2009e6915d10036a916a1040cbb680ac/raw/40479947fca779a38a0001cfdb141b112bd1d120/BetterRequest.js"
 
 request = new Request(usdBtcTracker);
 requestUsdBtcTrackerStr = await request.loadJSON()
@@ -46,6 +47,22 @@ const loadModule = (name, version, url) =>  {
 }
 module.exports = loadModule
 
+const BetterRequest = await loadModule("BetterRequest", "2009e6915", betterRequestUrl)
+
+async function getProfile(name) {
+    let req = new BetterRequest("https://api.bitclout.com/get-profiles");
+    req.method = "post";
+    req.json = {
+        PublicKeyBase58Check:"",
+        Username:name,
+        NumToFetch:1,
+        ModerationType:"",
+        FetchUsersThatHODL:false,
+        AddGlobalFeedBool:false
+    };
+    return await req.loadJSON();
+}
+
 /**
  * request cache
  * Map<string, any>
@@ -78,6 +95,13 @@ async function createWidget(widgetSize) {
     const list = new ListWidget()
     list.backgroundColor = new Color("#b00a0f")
 
+    if (args.widgetParameter) {
+        parameter = args.widgetParameter
+    } else {
+        parameter = "elonmusk;cryptocobain;RandomTask"
+    }
+    const names = parameter.split(";")
+
     const stack = list.addStack()
     stack.layoutVertically()
     stack.addSpacer()
@@ -85,19 +109,31 @@ async function createWidget(widgetSize) {
     imgBitclout = await getLogoFromUrl(imgBitCloutUrl)
     const image = stack.addImage(imgBitclout)
     image.imageSize = new Size(60, 20)
-    stack.addSpacer(5)
+    stack.addSpacer(3)
 
     const title = stack.addText("Price ~$" + actUsdPrice.toFixed(2));
     title.textColor = Color.white();
     title.textOpacity = 0.8;
-    title.font = new Font("Helvetica-Light ", 12);
-    stack.addSpacer(5)
+    title.font = new Font("Helvetica-Light ", 11);
+    stack.addSpacer(3)
+
+    for (name of names) {
+        let result = await getProfile(name)
+        const coinPriceBitCloutNanos = result.ProfilesFound[0].CoinPriceBitCloutNanos
+        const username = result.ProfilesFound[0].Username
+        const titleUser = stack.addText(username + " ~$" + (coinPriceBitCloutNanos/1e9*actUsdPrice).toFixed(2));
+        titleUser.textColor = Color.white();
+        titleUser.textOpacity = 0.8;
+        titleUser.minimumScaleFactor = 0.3
+        titleUser.font = new Font("Helvetica-Light ", 11);
+        stack.addSpacer(3)
+    }
 
     const date = new Date();
     const lastUpdate = stack.addText(`LastUpdate: ${date.getHours()}:${date.getMinutes()}`);
     lastUpdate.textColor = Color.white();
     title.textOpacity = 0.8;
-    lastUpdate.font = new Font("Helvetica-Light", 12);
+    lastUpdate.font = new Font("Helvetica-Light", 11);
     stack.addSpacer()
 
     return list
