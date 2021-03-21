@@ -1,6 +1,7 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: teal; icon-glyph: dollar-sign;
+// Version 0.1.0
 
 const ethGasStationApiUrl = `https://ethgasstation.info/api/ethgasAPI.json`;
 const req = new Request(ethGasStationApiUrl);
