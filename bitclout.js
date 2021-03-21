@@ -131,7 +131,9 @@ async function createWidget(widgetSize) {
     }
 
     const date = new Date();
-    const lastUpdate = stack.addText(`LastUpdate: ${date.getHours()}:${date.getMinutes()}`);
+    currentMinutes = ("0" + date.getMinutes()).slice(-2);
+    currentHours = ("0" + date.getHours()).slice(-2);
+    const lastUpdate = stack.addText(`LastUpdate: ${currentHours}:${currentMinutes}`);
     lastUpdate.textColor = colorGray;
     title.textOpacity = 0.8;
     lastUpdate.font = new Font("Helvetica-Light", 11);
