@@ -93,7 +93,8 @@ Script.complete()
 
 async function createWidget(widgetSize) {
     const list = new ListWidget()
-    list.backgroundColor = new Color("#b00a0f")
+    list.backgroundColor = new Color("#ffffff")
+    colorGray = new Color("#777777")
 
     if (args.widgetParameter) {
         parameter = args.widgetParameter
@@ -112,7 +113,7 @@ async function createWidget(widgetSize) {
     stack.addSpacer(3)
 
     const title = stack.addText("Price ~$" + actUsdPrice.toFixed(2));
-    title.textColor = Color.white();
+    title.textColor = colorGray;
     title.textOpacity = 0.8;
     title.font = new Font("Helvetica-Light ", 11);
     stack.addSpacer(3)
@@ -122,7 +123,7 @@ async function createWidget(widgetSize) {
         const coinPriceBitCloutNanos = result.ProfilesFound[0].CoinPriceBitCloutNanos
         const username = result.ProfilesFound[0].Username
         const titleUser = stack.addText(username + " ~$" + (coinPriceBitCloutNanos/1e9*actUsdPrice).toFixed(2));
-        titleUser.textColor = Color.white();
+        titleUser.textColor = colorGray;
         titleUser.textOpacity = 0.8;
         titleUser.minimumScaleFactor = 0.3
         titleUser.font = new Font("Helvetica-Light ", 11);
@@ -131,7 +132,7 @@ async function createWidget(widgetSize) {
 
     const date = new Date();
     const lastUpdate = stack.addText(`LastUpdate: ${date.getHours()}:${date.getMinutes()}`);
-    lastUpdate.textColor = Color.white();
+    lastUpdate.textColor = colorGray;
     title.textOpacity = 0.8;
     lastUpdate.font = new Font("Helvetica-Light", 11);
     stack.addSpacer()
