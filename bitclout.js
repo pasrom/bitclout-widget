@@ -58,13 +58,13 @@ async function createWidget(widgetSize) {
     imgBitclout = await getLogoFromUrl(imgBitCloutUrl)
     const image = stack.addImage(imgBitclout)
     image.imageSize = new Size(60, 20)
-    stack.addSpacer(1)
+    stack.addSpacer(5)
 
     const title = stack.addText("Price ~$" + actUsdPrice.toFixed(2));
     title.textColor = Color.white();
     title.textOpacity = 0.8;
     title.font = new Font("Helvetica-Light ", 12);
-    stack.addSpacer(1)
+    stack.addSpacer(5)
 
     const date = new Date();
     const lastUpdate = stack.addText(`LastUpdate: ${date.getHours()}:${date.getMinutes()}`);
