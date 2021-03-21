@@ -44,6 +44,9 @@ if (!config.runsInWidget) {
   }
 }
 
+Script.setWidget(widget)
+Script.complete()
+
 async function createWidget(widgetSize) {
     const list = new ListWidget()
     list.backgroundColor = new Color("#b00a0f")
