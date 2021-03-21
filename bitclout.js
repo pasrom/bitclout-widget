@@ -19,6 +19,33 @@ requestGetExchangeRate = await request2.loadJSON()
 
 const actUsdPrice =  1e9 / (1e9 / requestGetExchangeRate.SatoshisPerBitCloutExchangeRate / requestUsdBtcTrackerStr.USD.last * 1e8)
 
+// load module from url
+const loadModule = (name, version, url) =>  {
+  return new Promise((callback) => {
+    const fm = FileManager.iCloud()
+    const modulesPath = fm.joinPath(fm.documentsDirectory(), 'modules/')
+    const modulePath = fm.joinPath(modulesPath, `${name}/`)
+    const filePath = fm.joinPath(modulePath, `${name}-${version}.js`)
+
+    if (!fm.fileExists(modulePath)) {
+      fm.createDirectory(modulePath, true)
+    }
+    if (!fm.fileExists(filePath) ) {
+      const req = new Request(url)
+      req.loadString().then(res => {
+        fm.writeString(filePath, `${res}`).then(() => {
+          callback(importModule(filePath))
+        })
+      })
+    } else {
+      fm.downloadFileFromiCloud(filePath).then(() => {
+        callback(importModule(filePath))
+      })
+    }
+  })
+}
+module.exports = loadModule
+
 /**
  * request cache
  * Map<string, any>
