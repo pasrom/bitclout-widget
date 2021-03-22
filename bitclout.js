@@ -9,7 +9,7 @@ const res = await req.loadJSON();
 
 usdBtcTracker = "https://blockchain.info/ticker"
 getExchangeRate = "https://api.bitclout.com/get-exchange-rate"
-imgBitCloutUrl = "https://i.imgur.com/WqhXjJS.png"
+imgBitCloutUrl = "https://i.imgur.com/NAosi4v.png"
 betterRequestUrl = "https://gist.githubusercontent.com/schl3ck/2009e6915d10036a916a1040cbb680ac/raw/40479947fca779a38a0001cfdb141b112bd1d120/BetterRequest.js"
 
 request = new Request(usdBtcTracker);
