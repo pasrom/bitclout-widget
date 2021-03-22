@@ -20,6 +20,25 @@ requestGetExchangeRate = await request2.loadJSON()
 
 const actUsdPrice =  1e9 / (1e9 / requestGetExchangeRate.SatoshisPerBitCloutExchangeRate / requestUsdBtcTrackerStr.USD.last * 1e8)
 
+const themes = {
+  light: {
+    picColor: "#000000",
+    textColor: "777777",
+  },
+  dark: {
+    picColor: "#ffffff",
+    textColor: "#ffffff",
+  }
+}
+
+if (Device.isUsingDarkAppearance()) {
+  var theme = themes['dark']
+  var darkMode = true
+} else {
+  var theme = themes['light']
+  var darkMode = false
+}
+
 // load module from url
 const loadModule = (name, version, url) =>  {
   return new Promise((callback) => {
@@ -95,6 +114,7 @@ async function createWidget(widgetSize) {
     const list = new ListWidget()
     list.backgroundColor = new Color("#ffffff")
     colorGray = new Color("#777777")
+    textColor = new Color(theme.textColor)
 
     if (args.widgetParameter) {
         parameter = args.widgetParameter
@@ -110,10 +130,11 @@ async function createWidget(widgetSize) {
     imgBitclout = await getLogoFromUrl(imgBitCloutUrl)
     const image = stack.addImage(imgBitclout)
     image.imageSize = new Size(60, 20)
+    image.tintColor = new Color(theme.picColor)
     stack.addSpacer(3)
 
     const title = stack.addText("Price ~$" + actUsdPrice.toFixed(2));
-    title.textColor = colorGray;
+    title.textColor = textColor;
     title.textOpacity = 0.8;
     title.font = new Font("Helvetica-Light ", 11);
     stack.addSpacer(3)
@@ -123,7 +144,7 @@ async function createWidget(widgetSize) {
         const coinPriceBitCloutNanos = result.ProfilesFound[0].CoinPriceBitCloutNanos
         const username = result.ProfilesFound[0].Username
         const titleUser = stack.addText(username + " ~$" + (coinPriceBitCloutNanos/1e9*actUsdPrice).toFixed(2));
-        titleUser.textColor = colorGray;
+        titleUser.textColor = textColor;
         titleUser.textOpacity = 0.8;
         titleUser.minimumScaleFactor = 0.3
         titleUser.font = new Font("Helvetica-Light ", 11);
@@ -134,7 +155,7 @@ async function createWidget(widgetSize) {
     currentMinutes = ("0" + date.getMinutes()).slice(-2);
     currentHours = ("0" + date.getHours()).slice(-2);
     const lastUpdate = stack.addText(`LastUpdate: ${currentHours}:${currentMinutes}`);
-    lastUpdate.textColor = colorGray;
+    lastUpdate.textColor = textColor;
     title.textOpacity = 0.8;
     lastUpdate.font = new Font("Helvetica-Light", 11);
     stack.addSpacer()
